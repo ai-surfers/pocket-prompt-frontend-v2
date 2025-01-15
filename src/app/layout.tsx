@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Home from "./page";
+import Styles from "@/styles";
 
 export const metadata: Metadata = {
     title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
@@ -53,7 +54,9 @@ export default function RootLayout({
                     href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
                 />
             </head>
-            <body>{children}</body>
+            <body>
+                <Styles>{children}</Styles>
+            </body>
         </html>
     );
 }
