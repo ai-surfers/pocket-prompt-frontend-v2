@@ -165,6 +165,7 @@ const HomeContentWrapper = styled.div<{ $isUnderTablet: boolean }>`
 const ContentWrapper = styled(Wrapper)`
     max-width: 1107px;
     width: 100vw;
+    padding-top: 0;
     padding: 0 10px;
 `;
 

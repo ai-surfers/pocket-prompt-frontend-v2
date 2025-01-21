@@ -4,6 +4,8 @@ import Styles from "@/styles";
 import RecoilProvider from "@/components/RecoilProvider";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import LayoutClient from "@/components/layout/LayoutClient";
+import Toast from "@/components/common/Toast/Toast";
+import GlobalModal from "@/components/common/Modal/GlobalModal";
 
 export const metadata: Metadata = {
     title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
@@ -61,6 +63,8 @@ export default function RootLayout({
                     <ReactQueryProvider>
                         <RecoilProvider>
                             <LayoutClient>{children}</LayoutClient>
+                            <Toast />
+                            <GlobalModal />
                         </RecoilProvider>
                     </ReactQueryProvider>
                 </Styles>
