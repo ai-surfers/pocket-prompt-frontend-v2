@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Styles from "@/styles";
-import LayoutClient from "@/components/layout/LayoutClient";
-import RecoilProvider from "@/states/RecoilProvider";
+import RecoilProvider from "@/components/RecoilProvider";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 export const metadata: Metadata = {
     title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
@@ -56,11 +56,11 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <RecoilProvider>
-                    <Styles>
-                        <LayoutClient>{children}</LayoutClient>
-                    </Styles>
-                </RecoilProvider>
+                <Styles>
+                    <ReactQueryProvider>
+                        <RecoilProvider>{children}</RecoilProvider>
+                    </ReactQueryProvider>
+                </Styles>
             </body>
         </html>
     );

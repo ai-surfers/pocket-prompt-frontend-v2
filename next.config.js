@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-import dotenv from "dotenv";
-import path from "path";
+const dotenv = require("dotenv");
+const path = require("path");
 
 // 환경 변수 파일 경로 설정
 const envFilePath = path.resolve(
@@ -12,8 +11,8 @@ const envFilePath = path.resolve(
 // .env 파일 로드
 dotenv.config({ path: envFilePath });
 
-const nextConfig: NextConfig = {
-    /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
     styledComponents: true,
     reactStrictMode: true,
     swcMinify: true,
@@ -40,4 +39,4 @@ const nextConfig: NextConfig = {
     },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
