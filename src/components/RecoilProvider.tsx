@@ -7,13 +7,5 @@ export default function RecoilProvider({
 }: {
     children: React.ReactNode;
 }) {
-    return (
-        <RecoilRoot
-            initializeState={(snapshot) => {
-                console.log("Recoil 초기화 상태:", snapshot);
-            }}
-        >
-            {children}
-        </RecoilRoot>
-    );
+    return <RecoilRoot>{children}</RecoilRoot>;
 }
