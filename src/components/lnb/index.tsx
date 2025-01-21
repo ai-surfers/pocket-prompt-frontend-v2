@@ -25,7 +25,7 @@ interface LNBtype {
 }
 
 const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
-    const [selectedKey, setSelectedKey] = useState<string>("1");
+    const [selectedKey, setSelectedKey] = useState<string>(initialMenu || "1");
     const { isUnderTablet } = useDeviceSize();
 
     // 메뉴 항목을 동적으로 생성
@@ -59,6 +59,10 @@ const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
     useEffect(() => {
         setSelectedKey(initialMenu);
     }, [initialMenu]);
+
+    if (typeof window === "undefined") {
+        return null; // 서버 렌더링 중에는 아무것도 렌더링하지 않음
+    }
 
     if (isUnderTablet) {
         return (
