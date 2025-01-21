@@ -4,7 +4,7 @@ import Button from "@/components/common/Button/Button";
 import { useUser } from "@/hooks/useUser";
 import { LOCALSTORAGE_KEYS, removeLocalStorage } from "@/utils/storageUtils";
 import Text from "@/components/common/Text/Text";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface LogoutButtonProps {
     isUnderTablet: boolean;
@@ -12,12 +12,12 @@ interface LogoutButtonProps {
 
 const LogoutButton = ({ isUnderTablet }: LogoutButtonProps) => {
     const { resetUserState } = useUser();
-    const navigate = useNavigate();
+    const router = useRouter();
 
     function handleLogout() {
         removeLocalStorage(LOCALSTORAGE_KEYS.ACCESS_TOKEN);
         resetUserState();
-        navigate("/", { replace: true });
+        router.replace("/");
     }
     return (
         <Button

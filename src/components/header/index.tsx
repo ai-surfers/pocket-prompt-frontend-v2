@@ -1,13 +1,13 @@
 "use client";
 
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { useUser } from "@/hooks/useUser";
-import LoginButton from "./LoginButton/LoginButton";
-import { useEffect } from "react";
+import LoginButton from "./LoginButton";
+import { useEffect, useState } from "react";
 import { getUser } from "@/apis/auth/auth";
-import User from "./User/User";
-import { Logo } from "@/assets/svg";
+import User from "./User";
+import Logo from "@svg/Logo";
 import {
     getLocalStorage,
     LOCALSTORAGE_KEYS,
@@ -17,15 +17,15 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Menus } from "@/core/Menu";
 import useDeviceSize from "@/hooks/useDeviceSize";
 import { Flex } from "antd";
-import LogoutButton from "./LogoutButton/LogoutButton";
-import GuideButton from "./GuideButton/GuideButton";
+import LogoutButton from "./LogoutButton";
+import GuideButton from "./GuideButton";
 
 type HeaderProps = {
     onOpen: () => void;
 };
 export default function Header({ onOpen }: HeaderProps) {
     const { setUser, resetUserState, userData } = useUser();
-
+    const [isReady, setIsReady] = useState(false);
     const { isUnderTablet } = useDeviceSize();
 
     useEffect(() => {
@@ -47,19 +47,24 @@ export default function Header({ onOpen }: HeaderProps) {
                 setUser(data);
             });
         }
+        setIsReady(true);
     }, []);
+
+    if (!isReady) {
+        return null; // 클라이언트가 준비되기 전에는 아무것도 렌더링하지 않음
+    }
 
     return (
         <HeaderContainer>
             <HeaderWrapper>
                 <HeaderLeftContainer>
-                    <StyledNavLink to="/">
+                    <StyledNavLink href="/">
                         <Logo style={{ width: "40px" }} />
                     </StyledNavLink>
                     {!isUnderTablet && (
                         <TabBarContainer>
                             {Menus.map((menu, idx) => (
-                                <StyledNavLink to={menu.path} key={idx}>
+                                <StyledNavLink href={menu.path} key={idx}>
                                     {menu.label}
                                 </StyledNavLink>
                             ))}
@@ -117,7 +122,7 @@ const HeaderWrapper = styled.div`
     flex-wrap: wrap;
 `;
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(Link)`
     ${({ theme }) => theme.fonts.body2};
     ${({ theme }) => theme.fonts.regular};
 

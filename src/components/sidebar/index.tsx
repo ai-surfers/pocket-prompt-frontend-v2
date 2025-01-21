@@ -12,7 +12,7 @@ import styled from "styled-components";
 import Icon from "../common/Icon";
 import Text from "../common/Text/Text";
 import LogoutButton from "../header/LogoutButton";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type SidebarProps = {
     open: boolean;

@@ -1,5 +1,5 @@
 import Text from "@/components/common/Text/Text";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
 import styled from "styled-components";
 
 type MenuItemProps = {
@@ -10,15 +10,15 @@ type MenuItemProps = {
     onClose: () => void;
 };
 const MenuItem = ({ menu, onClose }: MenuItemProps) => {
-    const location = useLocation();
-    const selected = location.pathname === menu.path;
+    const pathname = usePathname();
+    const router = useRouter();
+    const selected = pathname === menu.path;
 
     const font = selected ? "b2_16_med" : "b2_16_reg";
     const color = selected ? "primary" : "G_400";
 
-    const navigate = useNavigate();
     const handleOnNavigate = () => {
-        navigate(menu.path);
+        router.push(menu.path);
         onClose();
     };
     return (

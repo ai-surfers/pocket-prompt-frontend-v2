@@ -1,21 +1,21 @@
 "use client";
 
 import { useUser } from "@/hooks/useUser";
-import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Text from "@/components/common/Text/Text";
 import Icon from "@/components/common/Icon";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function User() {
     const { userData } = useUser();
-    const navigate = useNavigate();
+    const router = useRouter();
+    const pathname = usePathname();
 
-    const location = useLocation();
-    const isSelected = location.pathname.includes("my");
+    const isSelected = pathname.includes("my");
 
     return (
         <Wrapper $isSelected={isSelected}>
-            <UserWrapper onClick={() => navigate("/my")}>
+            <UserWrapper onClick={() => router.push("/my")}>
                 <Text
                     font="b3_14_reg"
                     color={isSelected ? "primary_100" : "G_800"}
