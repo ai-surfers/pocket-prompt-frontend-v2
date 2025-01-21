@@ -1,36 +1,18 @@
 "use client";
 
-import Banner from "@components/home/Banner";
-import { Wrapper } from "@components/layout/LayoutClient";
-import styled from "styled-components";
-import PaginatedPromptSection from "@/components/home/prompt/PaginatedPromptSection";
-
-import useToast from "@/hooks/useToast";
-import useDeviceSize from "@/hooks/useDeviceSize";
-import { useEffect, useState } from "react";
-import { useResetRecoilState } from "recoil";
-import {
-    searchedCategoryState,
-    searchedKeywordState,
-} from "@/states/searchState";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import HomeLnb from "@/components/home/HomeLnb";
+import PaginatedPromptSection from "@/components/home/prompt/PaginatedPromptSection";
+import useDeviceSize from "@/hooks/useDeviceSize";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
 
-export default function HomePage() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const router = useRouter();
-    const showToast = useToast();
+export default function SavedPromptPage() {
     const { isUnderTablet } = useDeviceSize();
-    const resetSearchedKeyword = useResetRecoilState(searchedKeywordState);
-    const resetSearchedCategory = useResetRecoilState(searchedCategoryState);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        resetSearchedKeyword();
-        resetSearchedCategory();
         setIsInitialized(true);
-    }, [resetSearchedCategory, resetSearchedKeyword]);
+    }, []);
 
     if (!isInitialized) {
         return null; // hydration 에러 방지
@@ -39,12 +21,9 @@ export default function HomePage() {
     return (
         <HomeWrapper>
             <HomeContentWrapper $isUnderTablet={isUnderTablet}>
-                <HomeLnb initialMenu="1" />
+                <HomeLnb initialMenu="4" />
                 <ContentWrapper>
-                    <BannerWrapper>
-                        <Banner />
-                    </BannerWrapper>
-                    <PaginatedPromptSection />
+                    <PaginatedPromptSection viewType="starred" />
                 </ContentWrapper>
             </HomeContentWrapper>
         </HomeWrapper>
@@ -71,14 +50,12 @@ const HomeContentWrapper = styled.div<{ $isUnderTablet: boolean }>`
     margin: 0 auto;
 `;
 
-const ContentWrapper = styled(Wrapper)`
+const ContentWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
     max-width: 1107px;
     width: 100vw;
-    padding-top: 0;
     padding: 0 10px;
-`;
-
-const BannerWrapper = styled.div`
-    margin-bottom: 15px;
-    width: 100%;
+    padding-top: 0;
 `;

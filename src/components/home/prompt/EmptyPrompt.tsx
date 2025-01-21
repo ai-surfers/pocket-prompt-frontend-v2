@@ -65,7 +65,7 @@ const EmptyPrompt = ({ viewType }: EmptyProps) => {
                         시간을 절약하세요!
                     </Text>
                     <Button
-                        onClick={() => router.push("/starred-prompt")}
+                        onClick={() => router.push("/saved-prompt")}
                         hierarchy="secondary"
                         size={44}
                         style={{ marginTop: "12px" }}
