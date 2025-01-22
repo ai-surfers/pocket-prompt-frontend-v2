@@ -14,13 +14,9 @@ import {
     searchedKeywordState,
 } from "@/states/searchState";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import HomeLnb from "@/components/home/HomeLnb";
+import HomeLnb from "@/components/lnb/HomeLnb";
 
 export default function HomePage() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const router = useRouter();
-    const showToast = useToast();
     const { isUnderTablet } = useDeviceSize();
     const resetSearchedKeyword = useResetRecoilState(searchedKeywordState);
     const resetSearchedCategory = useResetRecoilState(searchedCategoryState);
