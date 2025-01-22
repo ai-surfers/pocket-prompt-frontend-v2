@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import ArrowDown from "@/assets/svg/extension/arrow-down.svg";
-import ArrowUp from "@/assets/svg/extension/arrow-up.svg";
+import ArrowDown from "@svg/extension/arrow-down.svg";
+import ArrowUp from "@svg/extension/arrow-up.svg";
 
 import styled from "styled-components";
+import Image from "next/image";
 
 interface Props {
     question: string;
@@ -20,7 +21,7 @@ const QnAToggle = ({ question, answer }: Props) => {
                     <span>Q.</span>
                     <p>{question}</p>
                 </ToggleHeaderTitle>
-                <img src={opened ? ArrowUp : ArrowDown} />
+                <Image src={opened ? ArrowUp : ArrowDown} alt={question} />
             </ToggleHeader>
             <ToggleContent opened={opened}>
                 <span>A.</span>
