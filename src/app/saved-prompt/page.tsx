@@ -1,6 +1,6 @@
 "use client";
 
-import HomeLnb from "@/components/home/HomeLnb";
+import HomeLnb from "@/components/lnb/HomeLnb";
 import PaginatedPromptSection from "@/components/home/prompt/PaginatedPromptSection";
 import useDeviceSize from "@/hooks/useDeviceSize";
 import styled from "styled-components";
