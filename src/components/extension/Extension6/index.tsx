@@ -10,53 +10,55 @@ import {
 } from "./styles";
 import { CarouselData } from "./carouselData";
 import { useMediaQuery } from "react-responsive";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useEffect, useState } from "react";
+import AutoScroll from "embla-carousel-auto-scroll";
+
 const Extension6 = () => {
-    const isSmallPC = useMediaQuery({
-        maxWidth: "1279px",
-    });
+    const [viewportRef, embla] = useEmblaCarousel(
+        {
+            loop: true,
+            align: "start",
+            skipSnaps: false,
+        },
+        [
+            AutoScroll({
+                speed: 1.5, // 매끄러운 스크롤 속도 (높을수록 빠름)
+                stopOnInteraction: false, // 사용자 상호작용 시에도 스크롤 지속
+            }),
+        ]
+    );
 
-    const isTablet = useMediaQuery({
-        maxWidth: "1024px",
-    });
+    const [slidesToShow, setSlidesToShow] = useState(4.5);
 
-    const isMoblie = useMediaQuery({
-        maxWidth: "767px",
-    });
+    const updateSlidesToShow = useCallback(() => {
+        const width = window.innerWidth;
 
-    const getSlidesToShow = () => {
-        if (isMoblie) {
-            return 1.5;
-        } else if (isTablet) {
-            return 2.4;
-        } else if (isSmallPC) {
-            return 3;
+        if (width <= 767) {
+            setSlidesToShow(1.5);
+        } else if (width <= 1024) {
+            setSlidesToShow(2.4);
+        } else if (width <= 1279) {
+            setSlidesToShow(3);
         } else {
-            return 4.5;
+            setSlidesToShow(4.5);
         }
-    };
+    }, []);
 
-    const settings = {
-        dots: false,
-        infinite: true,
-        slidesToShow: getSlidesToShow(),
-        slidesToScroll: 1,
-        autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 0,
-        cssEase: "linear",
-    };
+    useEffect(() => {
+        updateSlidesToShow();
+        window.addEventListener("resize", updateSlidesToShow);
 
-    const settings2 = {
-        dots: false,
-        infinite: true,
-        slidesToShow: getSlidesToShow(),
-        slidesToScroll: 1,
-        autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 0,
-        cssEase: "linear",
-        initialSlide: 2.6,
-    };
+        return () => {
+            window.removeEventListener("resize", updateSlidesToShow);
+        };
+    }, [updateSlidesToShow]);
+
+    useEffect(() => {
+        if (embla) {
+            embla.reInit({ loop: true });
+        }
+    }, [embla, slidesToShow]);
 
     return (
         <Extension6Container>
@@ -66,30 +68,26 @@ const Extension6 = () => {
                 포켓 프롬프트로 편리해졌어요
             </Title>
             <CarouselWrap className="slider-container">
-                {/* <Slider {...settings}>
-                    {CarouselData.map((data) => (
-                        <CarouselCard key={data.userName}>
-                            <CarouselCardTitleWrap>
-                                <CarouselCardUserImg
-                                    src={data.img.src}
-                                    alt="user"
-                                />
-                                <CarouselCardUserName>
-                                    {data.userName}
-                                </CarouselCardUserName>
-                            </CarouselCardTitleWrap>
-                            <CarouselCardDescription>
-                                {data.description}
-                            </CarouselCardDescription>
-                        </CarouselCard>
-                    ))}
-                </Slider> */}
-            </CarouselWrap>
-            {isTablet && (
-                <CarouselWrap className="slider-container">
-                    {/* <Slider {...settings2}>
-                        {CarouselData.reverse().map((data) => (
-                            <CarouselCard key={data.userName}>
+                <div
+                    className="embla"
+                    style={{ overflow: "hidden", width: "100%" }}
+                    ref={viewportRef}
+                >
+                    <div
+                        className="embla__container"
+                        style={{
+                            display: "flex",
+                            gap: "16px",
+                            willChange: "transform",
+                        }}
+                    >
+                        {CarouselData.map((data) => (
+                            <CarouselCard
+                                key={data.userName}
+                                style={{
+                                    flex: `0 0 calc(100% / ${slidesToShow})`,
+                                }}
+                            >
                                 <CarouselCardTitleWrap>
                                     <CarouselCardUserImg
                                         src={data.img.src}
@@ -104,9 +102,9 @@ const Extension6 = () => {
                                 </CarouselCardDescription>
                             </CarouselCard>
                         ))}
-                    </Slider> */}
-                </CarouselWrap>
-            )}
+                    </div>
+                </div>
+            </CarouselWrap>
         </Extension6Container>
     );
 };
