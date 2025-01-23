@@ -29,7 +29,8 @@
             "@utils/*": ["./src/utils/*"],
             "@common/*": ["./src/components/common/*"],
             "@apis/*": ["./src/apis/*"],
-            "@core/*": ["./src/core/*"]
+            "@core/*": ["./src/core/*"],
+            "@schema/*": ["./src/schema/*"]
         }
     },
     "include": [
