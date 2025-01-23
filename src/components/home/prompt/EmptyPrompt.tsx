@@ -45,7 +45,7 @@ const EmptyPrompt = ({ viewType }: EmptyProps) => {
                         프롬프트를 등록하면 이곳에 나타나요 <br />
                         나만의 프롬프트를 등록하러 가볼까요?
                     </Text>
-                    <Button onClick={() => router.push("/prompt-new")}>
+                    <Button onClick={() => router.push("/new-prompt")}>
                         <Icon name="Add" color="white" />
                         프롬프트 등록
                     </Button>

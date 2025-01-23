@@ -67,7 +67,7 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
     ];
 
     const handleClickNewButton = () => {
-        router.push("/prompt-new");
+        router.push("/new-prompt");
     };
 
     const newPropmptButton = (
