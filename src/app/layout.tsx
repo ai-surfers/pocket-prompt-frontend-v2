@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Home from "./page";
+import Styles from "@/styles";
+import RecoilProvider from "@/components/RecoilProvider";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
+import LayoutClient from "@/components/layout/LayoutClient";
+import Toast from "@/components/common/Toast/Toast";
+import GlobalModal from "@/components/common/Modal/GlobalModal";
 
-export const metadata: Metadata = {
+export const defaultMetadata: Metadata = {
     title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
     keywords:
         "ChatGPT 프롬프트, AI 프롬프트 템플릿, 프롬프트 엔지니어링, 프롬프트 모음, AI 활용법, 프롬프트 저장, 프롬프트 공유, ChatGPT 활용, Claude 프롬프트",
@@ -41,19 +46,18 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
                 />
-                <link
-                    rel="stylesheet"
-                    type="text/css"
-                    charSet="UTF-8"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-                />
-                <link
-                    rel="stylesheet"
-                    type="text/css"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-                />
             </head>
-            <body>{children}</body>
+            <body>
+                <Styles>
+                    <ReactQueryProvider>
+                        <RecoilProvider>
+                            <LayoutClient>{children}</LayoutClient>
+                            <Toast />
+                            <GlobalModal />
+                        </RecoilProvider>
+                    </ReactQueryProvider>
+                </Styles>
+            </body>
         </html>
     );
 }
