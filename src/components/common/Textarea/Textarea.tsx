@@ -19,7 +19,6 @@ export default function Textarea({
     disabled = false,
     isMini = false,
 }: TextareaProps) {
-    console.log(isMini);
     function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
 
