@@ -15,9 +15,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
         // 가져온 데이터를 메타데이터로 반환
         return {
-            title: promptDetails.title,
+            ...defaultMetadata,
             description: promptDetails.description,
             keywords: promptDetails.title,
+            openGraph: {
+                title: promptDetails.title,
+                description: promptDetails.description,
+            },
         };
     } catch (error) {
         console.error("Error fetching prompt data for metadata:", error);
