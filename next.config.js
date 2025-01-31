@@ -13,7 +13,9 @@ dotenv.config({ path: envFilePath });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    styledComponents: true,
+    compiler: {
+        styledComponents: true, // SSR 활성화
+      },
     reactStrictMode: true,
     swcMinify: true,
     env: {
