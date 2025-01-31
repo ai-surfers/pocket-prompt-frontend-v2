@@ -255,6 +255,7 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                                     render={({ field }) => (
                                         <Textarea
                                             {...field}
+                                            ref={field.ref}
                                             placeholder={
                                                 input.placeholder ||
                                                 "입력 값을 입력해 주세요."
