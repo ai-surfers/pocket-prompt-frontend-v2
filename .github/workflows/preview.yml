@@ -29,7 +29,14 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
                       const { owner, repo, number } = context.issue;
-                      const commentBody = `🚀 **Amplify Preview URL:** [개발환경 미리보기](${process.env.AMPLIFY_URL})`;
+                      const commentBody = `
+🚀 Amplify Preview Success!
+
+- **Latest Commit**: [${process.env.LATEST_COMMIT}](https://github.com/${owner}/${repo}/commit/${process.env.LATEST_COMMIT})
+- **Latest Deploy Log**: [View Logs](${process.env.DEPLOY_LOG_URL})
+- **Deploy Preview URL**: [Preview Environment](${process.env.DEPLOY_PREVIEW_URL})
+- **Environment**: ${process.env.ENVIRONMENT}
+            `;
                       github.rest.issues.createComment({
                         owner,
                         repo,
