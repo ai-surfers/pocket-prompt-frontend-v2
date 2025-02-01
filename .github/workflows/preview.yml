@@ -18,6 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Trigger Amplify Deployment
+        run: |
+          curl -X POST https://api.amplify.aws/apps/<AMPLIFY_APP_ID>/branches/${{ github.head_ref }}/deployments \
+          -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_TOKEN }}" \
+          -H "Content-Type: application/json"
+
       - name: Set Environment Variables
         run: |
           echo "LATEST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
@@ -32,7 +38,7 @@ jobs:
           script: |
             const { owner, repo, number } = context.issue;
             const commentBody = `
-###🚀 Amplify Preview Success!
+### 🚀 Amplify Preview Success!
 
 | Name                  | Link                                                                 |
 |-----------------------|----------------------------------------------------------------------|
