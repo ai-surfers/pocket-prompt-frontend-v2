@@ -20,8 +20,8 @@ jobs:
 
       - name: Trigger Amplify Deployment
         run: |
-          curl -X POST https://api.amplify.aws/apps/<AMPLIFY_APP_ID>/branches/${{ github.head_ref }}/deployments \
-          -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_TOKEN }}" \
+          curl -X POST https://api.amplify.aws/apps/d2ggjieg648h6b/branches/${{ github.head_ref }}/deployments \
+          -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -H "Content-Type: application/json"
 
       - name: Set Environment Variables
