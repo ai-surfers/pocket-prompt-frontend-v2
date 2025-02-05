@@ -1,55 +1,45 @@
 name: Amplify Preview Deployment
 
 on:
-  pull_request:
-    branches:
-      - develop
-      - main
-    types: [opened, synchronize, reopened]
+    pull_request:
+        branches:
+            - develop
+            - main
+        types: [opened, synchronize, reopened]
 
 permissions:
-  issues: write
-  pull-requests: write
+    issues: write
+    pull-requests: write
 
 jobs:
-  preview:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    preview:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-      - name: Trigger Amplify Deployment
-        run: |
-          curl -X POST https://api.amplify.aws/apps/d2ggjieg648h6b/branches/${{ github.head_ref }}/deployments \
-          -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-          -H "Content-Type: application/json"
+            - name: Trigger Amplify Deployment
+              run: |
+                  curl -X POST https://api.amplify.aws/apps/d2ggjieg648h6b/branches/${{ github.head_ref }}/deployments \
+                  -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+                  -H "Content-Type: application/json"
 
-      - name: Set Environment Variables
-        run: |
-          echo "LATEST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
-          echo "DEPLOY_LOG_URL=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV
-          echo "DEPLOY_PREVIEW_URL=https://develop.d2ggjieg648h6b.amplifyapp.com" >> $GITHUB_ENV
-          echo "ENVIRONMENT=preview" >> $GITHUB_ENV
+            - name: Set Environment Variables
+              run: |
+                  echo "LATEST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+                  echo "DEPLOY_LOG_URL=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV
+                  echo "DEPLOY_PREVIEW_URL=https://develop.d2ggjieg648h6b.amplifyapp.com" >> $GITHUB_ENV
+                  echo "ENVIRONMENT=preview" >> $GITHUB_ENV
 
-      - name: Comment on PR
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo, number } = context.issue;
-            const commentBody = `
-### 🚀 Amplify Preview Success!
-
-| Name                  | Link                                                                 |
-|-----------------------|----------------------------------------------------------------------|
-| **Latest Commit**     | [${process.env.LATEST_COMMIT}](https://github.com/${owner}/${repo}/commit/${process.env.LATEST_COMMIT}) |
-| **Latest Deploy Log** | [View Logs](${process.env.DEPLOY_LOG_URL})                          |
-| **Deploy Preview URL**| [Preview Environment](${process.env.DEPLOY_PREVIEW_URL})            |
-| **Environment**       | ${process.env.ENVIRONMENT}                                          |
-            `;
-            github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: number,
-              body: commentBody.trim()
-            });
+            - name: Comment on PR
+              uses: actions/github-script@v6
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  message: >
+                      ### 🚀 Amplify Preview Success!
+                      | Name                  | Link                                                                 |
+                      |-----------------------|----------------------------------------------------------------------|
+                      | **Latest Commit**     | [${env.LATEST_COMMIT}](https://github.com/${owner}/${repo}/commit/${env.LATEST_COMMIT}) |
+                      | **Latest Deploy Log** | [View Logs](${env.DEPLOY_LOG_URL})                          |
+                      | **Deploy Preview URL**| [Preview Environment](${env.DEPLOY_PREVIEW_URL})            |
+                      | **Environment**       | ${env.ENVIRONMENT}                                          |
