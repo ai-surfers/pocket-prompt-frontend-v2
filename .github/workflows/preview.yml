@@ -20,9 +20,13 @@ jobs:
 
             - name: Trigger Amplify Deployment
               run: |
-                  curl -X POST https://api.amplify.aws/apps/d2ggjieg648h6b/branches/${{ github.head_ref }}/deployments \
-                  -H "Authorization: Bearer ${{ secrets.AWS_ACCESS_KEY_ID }}:${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-                  -H "Content-Type: application/json"
+                  aws amplify start-deployment \
+                    --app-id d2ggjieg648h6b \
+                    --branch-name ${{ github.head_ref }} \
+                    --region us-east-1
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
             - name: Set Environment Variables
               run: |
@@ -39,7 +43,7 @@ jobs:
                       ### 🚀 Amplify Preview Success!
                       | Name                  | Link                                                                 |
                       |-----------------------|----------------------------------------------------------------------|
-                      | **Latest Commit**     | [${env.LATEST_COMMIT}](https://github.com/${owner}/${repo}/commit/${env.LATEST_COMMIT}) |
-                      | **Latest Deploy Log** | [View Logs](${env.DEPLOY_LOG_URL})                          |
-                      | **Deploy Preview URL**| [Preview Environment](${env.DEPLOY_PREVIEW_URL})            |
-                      | **Environment**       | ${env.ENVIRONMENT}                                          |
+                      | **Latest Commit**     | [${{ env.LATEST_COMMIT }}](https://github.com/${{ github.repository }}/commit/${{ env.LATEST_COMMIT }}) |
+                      | **Latest Deploy Log** | [View Logs](${{ env.DEPLOY_LOG_URL }})                          |
+                      | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
+                      | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
