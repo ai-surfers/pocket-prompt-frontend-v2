@@ -1,9 +1,10 @@
+# develop -> main으로 PR 남길 때 동작 (AWS amplify가 브랜치별 자동 미리보기 지원하지 않음)
+
 name: Amplify Preview Deployment
 
 on:
     pull_request:
         branches:
-            - develop
             - main
         types: [opened, synchronize, reopened]
 
