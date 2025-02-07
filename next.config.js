@@ -5,7 +5,7 @@ const path = require("path");
 const envFilePath = path.resolve(
     __dirname,
     "pocket-prompt-frontend-v2-envs/.env.next." +
-        (process.env.NODE_ENV || "development")
+        (process.env.APP_ENV || process.env.NODE_ENV || "development")
 );
 
 // .env 파일 로드
@@ -19,6 +19,7 @@ const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
     env: {
+        APP_ENV: process.env.APP_ENV, 
         NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
         NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL,
         NEXT_PUBLIC_PORTONE_STORE_ID: process.env.NEXT_PUBLIC_PORTONE_STORE_ID,
