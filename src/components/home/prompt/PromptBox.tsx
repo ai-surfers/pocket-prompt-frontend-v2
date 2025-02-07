@@ -83,7 +83,7 @@ const PromptWrapper = styled.div<{ $colored: boolean }>`
     cursor: pointer;
     transition: box-shadow 0.3s ease;
 
-    min-width: 345px;
+    max-width: 350px;
     flex-shrink: 0;
 
     &:hover {
