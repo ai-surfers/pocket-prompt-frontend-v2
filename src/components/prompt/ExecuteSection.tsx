@@ -19,6 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Textarea from "@/components/common/Textarea/Textarea";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 interface ExecuteSectionProps {
     onSelect: (value: string) => void;
@@ -62,14 +63,14 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
         },
         onError: (err) => {
             if (
-                err.message ===
+                err.response?.data?.detail ===
                     "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요." ||
-                err.message ===
+                err.response?.data?.detail ===
                     "무료 사용자는 고급 모델을 사용할 수 없습니다. 유료 플랜으로 업그레이드해 주세요."
             ) {
                 const targetUrl =
                     process.env.NODE_ENV === "production"
-                        ? err.message ===
+                        ? err.response?.data?.detail ===
                           "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요."
                             ? UTM_OVER_USAGE_LIMIT_URL
                             : UTM_TIER_LIMIT_URL
@@ -87,7 +88,7 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                     title: "포켓런 한도에 도달했어요",
                     content: (
                         <Text font="b3_14_reg" color="G_700">
-                            {err.message ===
+                            {err.response?.data?.detail ===
                             "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요."
                                 ? "플랜 한도를 초과하였어요. 플랜을 업그레이드해 주세요."
                                 : "무료 사용자는 고급 모델을 사용할 수 없어요. 유료 플랜으로 업그레이드해 주세요."}
