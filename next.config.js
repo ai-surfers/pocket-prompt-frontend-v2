@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 const path = require("path");
-const isDev = process.env.NODE_ENV === "development";
 
 // 환경 변수 파일 경로 설정
 const envFilePath = path.resolve(
@@ -40,7 +39,6 @@ const nextConfig = {
         NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
         SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     },
-    output: isDev ? "standalone" : "export",
 };
 
 module.exports = nextConfig;
