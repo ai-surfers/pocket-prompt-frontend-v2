@@ -83,6 +83,9 @@ const PromptWrapper = styled.div<{ $colored: boolean }>`
     cursor: pointer;
     transition: box-shadow 0.3s ease;
 
+    min-width: 345px;
+    flex-shrink: 0;
+
     &:hover {
         box-shadow: 0px 0px 64px 0px rgba(117, 128, 234, 0.18);
     }
