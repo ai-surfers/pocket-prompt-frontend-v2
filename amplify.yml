@@ -8,12 +8,11 @@ frontend:
                 - git config --global credential.helper store
                 - git submodule sync --recursive
                 - git submodule update --init --recursive
-                - export NODE_ENV=development
 
         build:
             commands:
                 - yarn install --frozen-lockfile
-                - yarn run build
+                - yarn run build:dev
     artifacts:
         baseDirectory: .next
         files:
