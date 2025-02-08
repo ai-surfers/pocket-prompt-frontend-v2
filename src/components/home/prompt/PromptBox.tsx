@@ -4,6 +4,7 @@ import { pocketRunState } from "@/states/pocketRunState";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/common/Icon";
+import Link from "next/link";
 
 interface PromptProps {
     colored?: boolean;
@@ -36,30 +37,38 @@ const PromptBox = ({
     };
 
     return (
-        <PromptWrapper $colored={colored} onClick={handleClick}>
-            {colored && <NumberTag>{index}</NumberTag>}
-            <TitlesWrapper>
-                <Title $colored={colored}>{title}</Title>
-                <Subtitle>{description}</Subtitle>
-            </TitlesWrapper>
-            <DetailsWrapper>
-                <Details>
-                    <Icon name="Eye" color={colored ? "primary" : "G_400"} />
-                    <Numbers color={pointColor}>{views}</Numbers>
-                </Details>
-                <Details>
-                    <Icon name="Play" color={colored ? "primary" : "G_400"} />
-                    <Numbers color={pointColor}>{usages}</Numbers>
-                </Details>
-                <Details>
-                    <Icon
-                        name="Bookmark"
-                        color={colored ? "primary" : "G_400"}
-                    />
-                    <Numbers color={pointColor}>{star}</Numbers>
-                </Details>
-            </DetailsWrapper>
-        </PromptWrapper>
+        <Link href={`/prompt/${id}`}>
+            <PromptWrapper $colored={colored}>
+                {colored && <NumberTag>{index}</NumberTag>}
+                <TitlesWrapper>
+                    <Title $colored={colored}>{title}</Title>
+                    <Subtitle>{description}</Subtitle>
+                </TitlesWrapper>
+                <DetailsWrapper>
+                    <Details>
+                        <Icon
+                            name="Eye"
+                            color={colored ? "primary" : "G_400"}
+                        />
+                        <Numbers color={pointColor}>{views}</Numbers>
+                    </Details>
+                    <Details>
+                        <Icon
+                            name="Play"
+                            color={colored ? "primary" : "G_400"}
+                        />
+                        <Numbers color={pointColor}>{usages}</Numbers>
+                    </Details>
+                    <Details>
+                        <Icon
+                            name="Bookmark"
+                            color={colored ? "primary" : "G_400"}
+                        />
+                        <Numbers color={pointColor}>{star}</Numbers>
+                    </Details>
+                </DetailsWrapper>
+            </PromptWrapper>
+        </Link>
     );
 };
 
