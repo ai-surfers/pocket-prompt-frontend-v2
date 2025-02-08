@@ -28,7 +28,7 @@ export const defaultMetadata: Metadata = {
         images: [
             {
                 type: "image/svg",
-                url: `${baseUrl}/img/images.png`,
+                url: `${baseUrl}/img/image.png`,
             },
         ],
     },

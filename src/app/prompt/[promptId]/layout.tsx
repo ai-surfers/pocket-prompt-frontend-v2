@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 card: "summary_large_image",
                 title: `[프롬프트] ${promptDetails.title}`,
                 description: promptDetails.description,
-                images: [`${baseUrl}/img/images.png`],
+                images: [`${baseUrl}/img/image.png`],
             },
         };
     } catch (error) {
