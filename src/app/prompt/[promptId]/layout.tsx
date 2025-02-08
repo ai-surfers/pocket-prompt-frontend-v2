@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: promptDetails.description,
             keywords: promptDetails.title,
             openGraph: {
-                title: promptDetails.title,
+                ...defaultMetadata.openGraph,
+                title: `[프롬프트] ${promptDetails.title}`,
                 description: promptDetails.description,
             },
         };
