@@ -6,6 +6,8 @@ interface Props {
     params: { promptId: string }; // URL의 id 파라미터를 정의
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { promptId } = params;
 
@@ -22,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 ...defaultMetadata.openGraph,
                 title: `[프롬프트] ${promptDetails.title}`,
                 description: promptDetails.description,
+                url: `${baseUrl}/prompt/${promptDetails.id}`,
             },
         };
     } catch (error) {
