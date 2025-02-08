@@ -83,44 +83,51 @@ const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
 
     return (
         <LNBWrapper>
-            {menuItems.map((item) =>
-                item.type === "divider" ? (
-                    <hr
-                        style={{
-                            width: "133px",
-                            border: "none",
-                            borderTop: "1.5px solid #DEE0E8",
-                            margin: "16px 0",
-                        }}
-                    />
-                ) : (
-                    <Link href={item.route ?? ""}>
-                        <StyledMenuButton onClick={item.onClick}>
-                            <Flex gap={8} align="center">
-                                <Icon
-                                    name={item.iconType ?? "Add"}
-                                    color={
-                                        selectedKey === item.key
-                                            ? "primary"
-                                            : "G_400"
-                                    }
-                                    size={20}
-                                />
-                                <Text
-                                    font="b2_16_med"
-                                    color={
-                                        selectedKey === item.key
-                                            ? "primary"
-                                            : "G_400"
-                                    }
-                                >
-                                    {item.label}
-                                </Text>
-                            </Flex>
-                        </StyledMenuButton>
-                    </Link>
-                )
-            )}
+            <Flex vertical align="center" style={{ marginBottom: "10px" }}>
+                {menuItems.map((item) =>
+                    item.type === "divider" ? (
+                        <hr
+                            style={{
+                                width: "133px",
+                                border: "none",
+                                borderTop: "1.5px solid #DEE0E8",
+                                margin: "16px 0",
+                            }}
+                        />
+                    ) : (
+                        <Link href={item.route ?? ""}>
+                            <StyledMenuButton onClick={item.onClick}>
+                                <Flex gap={8} align="center">
+                                    <Icon
+                                        name={item.iconType ?? "Add"}
+                                        color={
+                                            selectedKey === item.key
+                                                ? "primary"
+                                                : "G_400"
+                                        }
+                                        size={20}
+                                    />
+                                    <Text
+                                        font={
+                                            selectedKey === item.key
+                                                ? "b2_16_bold"
+                                                : "b2_16_med"
+                                        }
+                                        color={
+                                            selectedKey === item.key
+                                                ? "primary"
+                                                : "G_400"
+                                        }
+                                    >
+                                        {item.label}
+                                    </Text>
+                                </Flex>
+                            </StyledMenuButton>
+                        </Link>
+                    )
+                )}
+            </Flex>
+            {button}
         </LNBWrapper>
     );
 };
