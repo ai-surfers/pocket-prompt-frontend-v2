@@ -1,5 +1,6 @@
 import Text from "@/components/common/Text/Text";
-import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styled from "styled-components";
 
 type MenuItemProps = {
@@ -11,23 +12,23 @@ type MenuItemProps = {
 };
 const MenuItem = ({ menu, onClose }: MenuItemProps) => {
     const pathname = usePathname();
-    const router = useRouter();
     const selected = pathname === menu.path;
 
     const font = selected ? "b2_16_med" : "b2_16_reg";
     const color = selected ? "primary" : "G_400";
 
     const handleOnNavigate = () => {
-        router.push(menu.path);
         onClose();
     };
     return (
-        <Item onClick={handleOnNavigate}>
-            {selected && <Rectangle />}
-            <Text font={font} color={color}>
-                {menu.label}
-            </Text>
-        </Item>
+        <Link href={menu.path}>
+            <Item onClick={handleOnNavigate}>
+                {selected && <Rectangle />}
+                <Text font={font} color={color}>
+                    {menu.label}
+                </Text>
+            </Item>
+        </Link>
     );
 };
 

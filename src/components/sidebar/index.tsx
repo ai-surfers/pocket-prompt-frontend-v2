@@ -12,7 +12,7 @@ import styled from "styled-components";
 import Icon from "../common/Icon";
 import Text from "../common/Text/Text";
 import LogoutButton from "../header/LogoutButton";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type SidebarProps = {
     open: boolean;
@@ -20,10 +20,8 @@ type SidebarProps = {
 };
 export default function Sidebar({ open, onClose }: SidebarProps) {
     const { userData } = useUser();
-    const router = useRouter();
 
     const handleClickUser = () => {
-        router.push("/my");
         onClose();
     };
 
@@ -48,12 +46,14 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                         gap={12}
                         style={{ padding: "12px", width: "100%" }}
                     >
-                        <UserWrapper onClick={handleClickUser}>
-                            <Icon name="User" color="G_800" />
-                            <Text font="b2_16_med">
-                                {userData.user?.nickname}
-                            </Text>
-                        </UserWrapper>
+                        <Link href="my">
+                            <UserWrapper onClick={handleClickUser}>
+                                <Icon name="User" color="G_800" />
+                                <Text font="b2_16_med">
+                                    {userData.user?.nickname}
+                                </Text>
+                            </UserWrapper>
+                        </Link>
                         <LogoutButton isUnderTablet={true} />
                     </Flex>
                 ) : (
