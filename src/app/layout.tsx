@@ -32,6 +32,13 @@ export const defaultMetadata: Metadata = {
             },
         ],
     },
+    twitter: {
+        card: "summary_large_image",
+        title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
+        description:
+            "ChatGPT, Claude 등 AI 프롬프트 작성이 어려우신가요? 검증된 프롬프트 템플릿을 저장하고 바로 사용하세요!",
+        images: [`${baseUrl}/img/images.png`],
+    },
 };
 
 export const metadata = defaultMetadata;

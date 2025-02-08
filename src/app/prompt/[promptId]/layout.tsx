@@ -26,6 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 description: promptDetails.description,
                 url: `${baseUrl}/prompt/${promptDetails.id}`,
             },
+            twitter: {
+                card: "summary_large_image",
+                title: `[프롬프트] ${promptDetails.title}`,
+                description: promptDetails.description,
+                images: [`${baseUrl}/img/images.png`],
+            },
         };
     } catch (error) {
         console.error("Error fetching prompt data for metadata:", error);
