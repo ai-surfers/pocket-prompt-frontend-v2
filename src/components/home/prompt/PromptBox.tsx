@@ -2,7 +2,6 @@ import theme from "@/styles/theme";
 import { useResetRecoilState } from "recoil";
 import { pocketRunState } from "@/states/pocketRunState";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 import Icon from "@/components/common/Icon";
 import Link from "next/link";
 

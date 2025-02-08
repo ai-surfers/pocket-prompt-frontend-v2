@@ -5,18 +5,14 @@ import Icon from "@/components/common/Icon";
 import PromptDeleteModal from "./PromptDeleteModal";
 import { Dropdown, MenuProps } from "antd";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface EditDropdownProps {
     prompt: PromptDetails;
 }
 export default function EditDropdown({ prompt }: EditDropdownProps) {
-    const router = useRouter();
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-    const handleOnEdit = () => {
-        router.push(`/prompt-edit/${prompt.id}`);
-    };
     const handleOnDelete = () => {
         setOpenDeleteModal(true);
     };
@@ -38,14 +34,15 @@ export default function EditDropdown({ prompt }: EditDropdownProps) {
         {
             key: "2",
             label: (
-                <Text
-                    font="b3_14_med"
-                    color="G_600"
-                    style={{ padding: "8px 4px" }}
-                    onClick={handleOnEdit}
-                >
-                    프롬프트 수정하기
-                </Text>
+                <Link href={`/prompt-edit/${prompt.id}`}>
+                    <Text
+                        font="b3_14_med"
+                        color="G_600"
+                        style={{ padding: "8px 4px" }}
+                    >
+                        프롬프트 수정하기
+                    </Text>
+                </Link>
             ),
         },
     ];

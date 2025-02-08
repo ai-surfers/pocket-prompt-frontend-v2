@@ -13,9 +13,9 @@ import { usePutBillingKeys } from "@/hooks/mutations/payments/usePutBillingKey";
 import { requestBillingKey } from "@/utils/billingUtils";
 import useDeviceSize from "@/hooks/useDeviceSize";
 import useToast from "@/hooks/useToast";
-import { useRouter } from "next/navigation";
 import MyLnb from "@/components/lnb/MyLnb";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const SUBSCRIPTION_STATUS = {
     active: "활성",
@@ -42,7 +42,6 @@ const columns = [
 ];
 
 export default function Subscription() {
-    const router = useRouter();
     const { isUnderTablet } = useDeviceSize();
     const showToast = useToast();
     const [isInitialized, setIsInitialized] = useState(false);
@@ -153,15 +152,16 @@ export default function Subscription() {
                     <Card>
                         <TitleWrapper>
                             <Text font="b1_18_bold">현재 구독 정보</Text>
-                            <Button
-                                hierarchy="normal"
-                                width="132px"
-                                size={44}
-                                style={{ justifyContent: "center" }}
-                                onClick={() => router.push("/price")}
-                            >
-                                플랜 변경
-                            </Button>
+                            <Link href={"/price"}>
+                                <Button
+                                    hierarchy="normal"
+                                    width="132px"
+                                    size={44}
+                                    style={{ justifyContent: "center" }}
+                                >
+                                    플랜 변경
+                                </Button>
+                            </Link>
                         </TitleWrapper>
                         <ContentWrapper>
                             <TextWrapper>

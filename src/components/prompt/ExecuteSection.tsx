@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Textarea from "@/components/common/Textarea/Textarea";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ExecuteSectionProps {
     onSelect: (value: string) => void;
@@ -49,7 +49,6 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
     const { userData } = useUser();
     const showToast = useToast();
     const { openModal, closeModal } = useModal();
-    const router = useRouter();
 
     const { mutate: pocketRun, isPending } = usePocketRun({
         onSuccess: (res) => {
@@ -67,20 +66,14 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                 err.message ===
                     "무료 사용자는 고급 모델을 사용할 수 없습니다. 유료 플랜으로 업그레이드해 주세요."
             ) {
-                const targetUrl =
-                    process.env.NODE_ENV === "production"
-                        ? err.message ===
-                          "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요."
-                            ? UTM_OVER_USAGE_LIMIT_URL
-                            : UTM_TIER_LIMIT_URL
-                        : "/price";
+                const utmUrl =
+                    err.message ===
+                    "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요."
+                        ? UTM_OVER_USAGE_LIMIT_URL
+                        : UTM_TIER_LIMIT_URL;
 
-                const handleClickPrice = () => {
-                    if (targetUrl.startsWith("http")) {
-                        window.location.href = targetUrl;
-                    } else {
-                        router.push(targetUrl);
-                    }
+                const handleClickPriceInProduction = () => {
+                    window.location.href = utmUrl;
                 };
 
                 openModal({
@@ -105,15 +98,38 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                             >
                                 닫기
                             </Button>
-                            <Button
-                                style={{ flex: 1, justifyContent: "center" }}
-                                onClick={() => {
-                                    closeModal();
-                                    handleClickPrice();
-                                }}
-                            >
-                                플랜 둘러보기
-                            </Button>
+                            {
+                                // 운영 환경일 때만 utm 경로로 이동
+                                process.env.APP_ENV === "production" ? (
+                                    <Button
+                                        style={{
+                                            flex: 1,
+                                            justifyContent: "center",
+                                        }}
+                                        onClick={() => {
+                                            closeModal();
+                                            handleClickPriceInProduction();
+                                        }}
+                                    >
+                                        플랜 둘러보기
+                                    </Button>
+                                ) : (
+                                    // 개발환경 일때는 일반 경로로 이동
+                                    <Link href="/price">
+                                        <Button
+                                            style={{
+                                                flex: 1,
+                                                justifyContent: "center",
+                                            }}
+                                            onClick={() => {
+                                                closeModal();
+                                            }}
+                                        >
+                                            플랜 둘러보기
+                                        </Button>
+                                    </Link>
+                                )
+                            }
                         </Flex>
                     ),
                 });

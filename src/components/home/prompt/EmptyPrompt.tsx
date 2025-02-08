@@ -6,15 +6,13 @@ import ImgEmpty from "@svg/ImgEmpty";
 import ImgEmptyColor from "@svg/ImgEmptyColor";
 import Text from "@components/common/Text/Text";
 import { ViewType } from "@apis/prompt/prompt.model";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface EmptyProps {
     viewType: ViewType;
 }
 
 const EmptyPrompt = ({ viewType }: EmptyProps) => {
-    const router = useRouter();
-
     if (viewType === "open")
         return (
             <EmptyWrapper vertical justify="center" align="center" gap={16}>
@@ -45,10 +43,12 @@ const EmptyPrompt = ({ viewType }: EmptyProps) => {
                         프롬프트를 등록하면 이곳에 나타나요 <br />
                         나만의 프롬프트를 등록하러 가볼까요?
                     </Text>
-                    <Button onClick={() => router.push("/new-prompt")}>
-                        <Icon name="Add" color="white" />
-                        프롬프트 등록
-                    </Button>
+                    <Link href="/new-prompt">
+                        <Button>
+                            <Icon name="Add" color="white" />
+                            프롬프트 등록
+                        </Button>
+                    </Link>
                 </Flex>
             </EmptyWrapper>
         );
@@ -64,14 +64,15 @@ const EmptyPrompt = ({ viewType }: EmptyProps) => {
                     <Text font="b2_16_semi" color="G_700">
                         시간을 절약하세요!
                     </Text>
-                    <Button
-                        onClick={() => router.push("/saved-prompt")}
-                        hierarchy="secondary"
-                        size={44}
-                        style={{ marginTop: "12px" }}
-                    >
-                        프롬프트 둘러보러 가기
-                    </Button>
+                    <Link href="/saved-prompt">
+                        <Button
+                            hierarchy="secondary"
+                            size={44}
+                            style={{ marginTop: "12px" }}
+                        >
+                            프롬프트 둘러보러 가기
+                        </Button>
+                    </Link>
                 </Flex>
             </EmptyWrapper>
         );
