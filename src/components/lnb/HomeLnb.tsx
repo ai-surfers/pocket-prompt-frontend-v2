@@ -8,6 +8,7 @@ import Text from "@/components/common/Text/Text";
 import Icon from "@/components/common/Icon";
 import useToast from "@/hooks/useToast";
 import Button from "../common/Button/Button";
+import Link from "next/link";
 
 interface HomeLnbType {
     initialMenu: string;
@@ -23,8 +24,7 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
             key: "1",
             label: "텍스트 프롬프트",
             iconType: "TextBlock",
-            onClick: () => router.push("/"),
-            "data-tracking-id": "text-prompt",
+            route: "/",
         },
         {
             key: "2",
@@ -38,7 +38,6 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
                     iconName: "Timer",
                 }),
             disabled: true,
-            "data-tracking-id": "image-prompt",
         },
         {
             key: "3",
@@ -52,7 +51,6 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
                     iconName: "Timer",
                 }),
             disabled: true,
-            "data-tracking-id": "video-prompt",
         },
         ...(isUnderTablet
             ? []
@@ -61,8 +59,7 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
             key: "4",
             label: "저장한 프롬프트",
             iconType: "Bookmark",
-            onClick: () => router.push("/saved-prompt"),
-            "data-tracking-id": "saved-prompt",
+            route: "/saved-prompt",
         },
     ];
 
@@ -71,16 +68,18 @@ const HomeLnb = ({ initialMenu }: HomeLnbType) => {
     };
 
     const newPropmptButton = (
-        <Button
-            onClick={handleClickNewButton}
-            style={{ padding: "8px 12px", gap: 2 }}
-            size={isUnderTablet ? 40 : 52}
-        >
-            <Icon name="Add" color="white" size={20} />
-            <Text font="b2_16_semi" color="white">
-                프롬프트 등록
-            </Text>
-        </Button>
+        <Link href="/new-prompt">
+            <Button
+                onClick={handleClickNewButton}
+                style={{ padding: "8px 12px", gap: 2 }}
+                size={isUnderTablet ? 40 : 52}
+            >
+                <Icon name="Add" color="white" size={20} />
+                <Text font="b2_16_semi" color="white">
+                    프롬프트 등록
+                </Text>
+            </Button>
+        </Link>
     );
 
     if (typeof window === "undefined") return null;
