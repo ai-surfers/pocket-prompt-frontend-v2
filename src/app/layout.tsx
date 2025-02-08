@@ -7,7 +7,7 @@ import LayoutClient from "@/components/layout/LayoutClient";
 import Toast from "@/components/common/Toast/Toast";
 import GlobalModal from "@/components/common/Modal/GlobalModal";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const webUrl = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
 
 export const defaultMetadata: Metadata = {
     title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
@@ -16,19 +16,19 @@ export const defaultMetadata: Metadata = {
     description:
         "ChatGPT, Claude 등 AI 프롬프트 작성이 어려우신가요? 검증된 프롬프트 템플릿을 저장하고 바로 사용하세요!",
     icons: {
-        icon: `${process.env.NEXT_PUBLIC_BASE_URL}/img/logo_white_square.png`,
+        icon: `${webUrl}/img/logo_white_square.png`,
     },
     openGraph: {
         title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
         description:
             "ChatGPT, Claude 등 AI 프롬프트 작성이 어려우신가요? 검증된 프롬프트 템플릿을 저장하고 바로 사용하세요!",
-        url: baseUrl,
+        url: webUrl,
         type: "website",
         siteName: "Pocket Prompt",
         images: [
             {
                 type: "image/svg",
-                url: `${baseUrl}/img/image.png`,
+                url: `${webUrl}/img/image.png`,
             },
         ],
     },
@@ -37,7 +37,7 @@ export const defaultMetadata: Metadata = {
         title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
         description:
             "ChatGPT, Claude 등 AI 프롬프트 작성이 어려우신가요? 검증된 프롬프트 템플릿을 저장하고 바로 사용하세요!",
-        images: [`${baseUrl}/img/images.png`],
+        images: [`${webUrl}/img/images.png`],
     },
 };
 
