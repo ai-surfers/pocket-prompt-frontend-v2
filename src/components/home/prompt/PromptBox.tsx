@@ -29,16 +29,10 @@ const PromptBox = ({
 }: PromptProps) => {
     const pointColor = colored ? theme.colors.primary : theme.colors.G_400;
     const resetPocketRunState = useResetRecoilState(pocketRunState);
-    const router = useRouter();
-
-    const handleClick = () => {
-        router.push(`/prompt/${id}`);
-        resetPocketRunState();
-    };
 
     return (
         <Link href={`/prompt/${id}`}>
-            <PromptWrapper $colored={colored}>
+            <PromptWrapper $colored={colored} onClick={resetPocketRunState}>
                 {colored && <NumberTag>{index}</NumberTag>}
                 <TitlesWrapper>
                     <Title $colored={colored}>{title}</Title>
