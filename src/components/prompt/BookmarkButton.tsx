@@ -124,9 +124,7 @@ export default function BookmarkButton({
             <>
                 <Button
                     size={44}
-                    suffix={
-                        <Icon name="Bookmark" color="primary_100" size={20} />
-                    }
+                    suffix={<Icon name="Bookmark" color="white" size={20} />}
                     style={{ padding: "12px" }}
                     onClick={handleOnClick}
                 />

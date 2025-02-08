@@ -29,6 +29,8 @@ export const defaultMetadata: Metadata = {
     },
 };
 
+export const metadata = defaultMetadata;
+
 export default function RootLayout({
     children,
 }: Readonly<{

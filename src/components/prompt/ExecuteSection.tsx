@@ -61,9 +61,9 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
         },
         onError: (err) => {
             if (
-                err.message ===
+                err.response?.data?.detail ===
                     "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요." ||
-                err.message ===
+                err.response?.data?.detail ===
                     "무료 사용자는 고급 모델을 사용할 수 없습니다. 유료 플랜으로 업그레이드해 주세요."
             ) {
                 const utmUrl =
@@ -80,7 +80,7 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                     title: "포켓런 한도에 도달했어요",
                     content: (
                         <Text font="b3_14_reg" color="G_700">
-                            {err.message ===
+                            {err.response?.data?.detail ===
                             "플랜 한도를 초과하였습니다. 플랜을 업그레이드해 주세요."
                                 ? "플랜 한도를 초과하였어요. 플랜을 업그레이드해 주세요."
                                 : "무료 사용자는 고급 모델을 사용할 수 없어요. 유료 플랜으로 업그레이드해 주세요."}
@@ -271,6 +271,7 @@ export const ExecuteSection: React.FC<ExecuteSectionProps> = ({
                                     render={({ field }) => (
                                         <Textarea
                                             {...field}
+                                            ref={field.ref}
                                             placeholder={
                                                 input.placeholder ||
                                                 "입력 값을 입력해 주세요."

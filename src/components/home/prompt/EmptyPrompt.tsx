@@ -43,7 +43,7 @@ const EmptyPrompt = ({ viewType }: EmptyProps) => {
                         프롬프트를 등록하면 이곳에 나타나요 <br />
                         나만의 프롬프트를 등록하러 가볼까요?
                     </Text>
-                    <Link href="/new-prompt">
+                    <Link href="/prompt-new">
                         <Button>
                             <Icon name="Add" color="white" />
                             프롬프트 등록
