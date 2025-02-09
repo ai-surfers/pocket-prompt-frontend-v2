@@ -49,18 +49,18 @@ jobs:
             - name: Wait for Amplify Deployment
               run: |
                   echo "Checking Amplify deployment status..."
-                  JOB_ID=$(aws amplify start-deployment --app-id d2ggjieg648h6b --branch-name develop --query "jobId" --output text)
+                  JOB_ID=$(aws amplify start-deployment --app-id d2ggjieg648h6b --branch-name develop --region us-east-2 --query "jobId" --output text)
                   echo "Started Amplify deployment with Job ID: $JOB_ID"
 
                   while true; do
-                    STATUS=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --query "job.summary.status" --output text)
+                    STATUS=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --region us-east-2 --query "job.summary.status" --output text)
                     echo "Current status: $STATUS"
                     if [[ "$STATUS" == "SUCCEED" ]]; then
                       echo "Amplify deployment completed successfully!"
                       break
                     elif [[ "$STATUS" == "FAILED" ]]; then
                       echo "Amplify deployment failed!"
-                      ERROR_MESSAGE=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --query "job.summary.statusReason" --output text)
+                      ERROR_MESSAGE=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --region us-east-2 --query "job.summary.statusReason" --output text)
                       echo "Error: $ERROR_MESSAGE" >> $GITHUB_ENV
                       exit 1
                     fi
