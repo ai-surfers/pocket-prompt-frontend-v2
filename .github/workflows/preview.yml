@@ -17,6 +17,16 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
+            - name: Set AWS Credentials
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              run: |
+                  echo "AWS credentials set"
+
+            - name: Set AWS Region
+              run: echo "AWS_REGION=us-east-2" >> $GITHUB_ENV
+
             - name: Set Environment Variables
               run: |
                   echo "LATEST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
@@ -113,6 +123,8 @@ jobs:
                         | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
                         | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
 
-                        ⚠️ Please check the **Amplify console logs** for more details.
+                        ⚠️ Please check the [**Amplify console logs**](https://us-east-2.console.aws.amazon.com/amplify/home?region=us-east-2) for more details.
+                        
+
                         `
                       });
