@@ -28,7 +28,7 @@ export const defaultMetadata: Metadata = {
         images: [
             {
                 type: "image/svg",
-                url: `${webUrl}/img/image.png`,
+                url: `${webUrl}/img/shared-thumbnail.png`,
             },
         ],
     },
@@ -37,7 +37,7 @@ export const defaultMetadata: Metadata = {
         title: "포켓 프롬프트 - ChatGPT 프롬프트 모음 | AI 프롬프트 템플릿 저장소",
         description:
             "ChatGPT, Claude 등 AI 프롬프트 작성이 어려우신가요? 검증된 프롬프트 템플릿을 저장하고 바로 사용하세요!",
-        images: [`${webUrl}/img/images.png`],
+        images: [`${webUrl}/img/shared-thumbnail.png`],
     },
 };
 
