@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Flex, message } from "antd";
 import { AxiosError } from "axios";
 import Icon from "../common/Icon";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface BookmarkButtonProps {
     is_starred: boolean;
@@ -22,8 +22,6 @@ export default function BookmarkButton({
 
     const [messageApi, contextHolder] = message.useMessage();
     const { openModal, closeModal } = useModal();
-
-    const router = useRouter();
 
     const handleOnClick = () => {
         if (!id) {
@@ -52,15 +50,16 @@ export default function BookmarkButton({
                     >
                         닫기
                     </Button>
-                    <Button
-                        style={{ flex: 1, justifyContent: "center" }}
-                        onClick={() => {
-                            closeModal();
-                            router.push("/price");
-                        }}
-                    >
-                        플랜 둘러보기
-                    </Button>
+                    <Link href="/price">
+                        <Button
+                            style={{ flex: 1, justifyContent: "center" }}
+                            onClick={() => {
+                                closeModal();
+                            }}
+                        >
+                            플랜 둘러보기
+                        </Button>
+                    </Link>
                 </Flex>
             ),
         });
@@ -125,9 +124,7 @@ export default function BookmarkButton({
             <>
                 <Button
                     size={44}
-                    suffix={
-                        <Icon name="Bookmark" color="primary_100" size={20} />
-                    }
+                    suffix={<Icon name="Bookmark" color="white" size={20} />}
                     style={{ padding: "12px" }}
                     onClick={handleOnClick}
                 />

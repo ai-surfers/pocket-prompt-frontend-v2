@@ -4,29 +4,31 @@ import { useUser } from "@/hooks/useUser";
 import styled from "styled-components";
 import Text from "@/components/common/Text/Text";
 import Icon from "@/components/common/Icon";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function User() {
     const { userData } = useUser();
-    const router = useRouter();
     const pathname = usePathname();
 
     const isSelected = pathname.includes("my");
 
     return (
         <Wrapper $isSelected={isSelected}>
-            <UserWrapper onClick={() => router.push("/my")}>
-                <Text
-                    font="b3_14_reg"
-                    color={isSelected ? "primary_100" : "G_800"}
-                >
-                    {userData.user?.nickname}
-                </Text>
-                <Icon
-                    name="User"
-                    color={isSelected ? "primary_100" : "G_800"}
-                />
-            </UserWrapper>
+            <Link href="/my">
+                <UserWrapper>
+                    <Text
+                        font="b3_14_reg"
+                        color={isSelected ? "primary_100" : "G_800"}
+                    >
+                        {userData.user?.nickname}
+                    </Text>
+                    <Icon
+                        name="User"
+                        color={isSelected ? "primary_100" : "G_800"}
+                    />
+                </UserWrapper>
+            </Link>
         </Wrapper>
     );
 }

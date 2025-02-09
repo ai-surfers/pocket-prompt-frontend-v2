@@ -17,13 +17,13 @@ const QnAToggle = ({ question, answer }: Props) => {
     return (
         <ToggleContainer>
             <ToggleHeader onClick={() => setOpend(!opened)}>
-                <ToggleHeaderTitle opened={opened}>
+                <ToggleHeaderTitle $opened={opened}>
                     <span>Q.</span>
                     <p>{question}</p>
                 </ToggleHeaderTitle>
                 <Image src={opened ? ArrowUp : ArrowDown} alt={question} />
             </ToggleHeader>
-            <ToggleContent opened={opened}>
+            <ToggleContent $opened={opened}>
                 <span>A.</span>
                 <ToggleContentText>{answer}</ToggleContentText>
             </ToggleContent>
@@ -53,13 +53,13 @@ const ToggleHeader = styled.div`
     cursor: pointer;
 `;
 
-const ToggleHeaderTitle = styled.span<{ opened: boolean }>`
+const ToggleHeaderTitle = styled.span<{ $opened: boolean }>`
     display: flex;
     color: var(--gray-600, #3e4151);
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
-    font-weight: ${({ opened }) => (opened ? "700" : "500")};
+    font-weight: ${({ $opened }) => ($opened ? "700" : "500")};
     line-height: 150%; /* 27px */
     letter-spacing: -0.36px;
 
@@ -74,8 +74,8 @@ const ToggleHeaderTitle = styled.span<{ opened: boolean }>`
     }
 `;
 
-const ToggleContent = styled.div<{ opened: boolean }>`
-    display: ${({ opened }) => (opened ? "flex" : "none")};
+const ToggleContent = styled.div<{ $opened: boolean }>`
+    display: ${({ $opened }) => ($opened ? "flex" : "none")};
     margin-top: 12px;
     margin-right: 20px;
 

@@ -7,6 +7,8 @@ import { ReactNode, useEffect, useState } from "react";
 import * as Icons from "iconsax-react";
 import Icon from "../common/Icon";
 import useDeviceSize from "@/hooks/useDeviceSize";
+import Link from "next/link";
+import Text from "../common/Text/Text";
 
 export interface MenuItemsType {
     key: string;
@@ -15,7 +17,7 @@ export interface MenuItemsType {
     type?: "divider";
     onClick?: () => void;
     disabled?: boolean;
-    "data-tracking-id"?: string;
+    route?: string;
 }
 
 interface LNBtype {
@@ -27,34 +29,6 @@ interface LNBtype {
 const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
     const [selectedKey, setSelectedKey] = useState<string>("1");
     const { isUnderTablet } = useDeviceSize();
-
-    // 메뉴 항목을 동적으로 생성
-    const desktopItems: MenuProps["items"] = menuItems.map((item) => {
-        if (!item.iconType || item.type === "divider") {
-            return { type: "divider", key: item.key };
-        }
-
-        return {
-            key: item.key,
-            icon: (
-                <Icon
-                    name={item.iconType}
-                    color={selectedKey === item.key ? "primary" : "G_400"}
-                    size={20}
-                />
-            ),
-            label: item.label,
-            onClick: item.onClick,
-        };
-    });
-
-    const handleClickDesktopMenu: MenuProps["onClick"] = (e) => {
-        const selectedItem = menuItems.find((item) => item.key === e.key);
-
-        if (!selectedItem?.disabled) {
-            setSelectedKey(e.key);
-        }
-    };
 
     useEffect(() => {
         setSelectedKey(initialMenu);
@@ -75,29 +49,31 @@ const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
             >
                 <Flex gap={20}>
                     {menuItems.map((item) => (
-                        <button
-                            onClick={() => {
-                                if (!item.disabled) {
-                                    setSelectedKey(item.key);
-                                }
-                                if (item.onClick) {
-                                    item.onClick();
-                                }
-                            }}
-                            key={item.key}
-                        >
-                            {item.iconType && (
-                                <Icon
-                                    name={item.iconType}
-                                    color={
-                                        selectedKey === item.key
-                                            ? "primary"
-                                            : "G_400"
+                        <Link href={item.route ?? ""}>
+                            <button
+                                onClick={() => {
+                                    if (!item.disabled) {
+                                        setSelectedKey(item.key);
                                     }
-                                    size={20}
-                                />
-                            )}
-                        </button>
+                                    if (item.onClick) {
+                                        item.onClick();
+                                    }
+                                }}
+                                key={item.key}
+                            >
+                                {item.iconType && (
+                                    <Icon
+                                        name={item.iconType}
+                                        color={
+                                            selectedKey === item.key
+                                                ? "primary"
+                                                : "G_400"
+                                        }
+                                        size={20}
+                                    />
+                                )}
+                            </button>
+                        </Link>
                     ))}
                 </Flex>
                 {button}
@@ -107,12 +83,50 @@ const LNB = ({ menuItems, button, initialMenu = "1" }: LNBtype) => {
 
     return (
         <LNBWrapper>
-            <StyledMenu
-                onClick={handleClickDesktopMenu}
-                selectedKeys={[selectedKey]}
-                mode="vertical"
-                items={desktopItems}
-            />
+            <Flex vertical align="center" style={{ marginBottom: "10px" }}>
+                {menuItems.map((item) =>
+                    item.type === "divider" ? (
+                        <hr
+                            style={{
+                                width: "133px",
+                                border: "none",
+                                borderTop: "1.5px solid #DEE0E8",
+                                margin: "16px 0",
+                            }}
+                        />
+                    ) : (
+                        <Link href={item.route ?? ""}>
+                            <StyledMenuButton onClick={item.onClick}>
+                                <Flex gap={8} align="center">
+                                    <Icon
+                                        name={item.iconType ?? "Add"}
+                                        color={
+                                            selectedKey === item.key
+                                                ? "primary"
+                                                : "G_400"
+                                        }
+                                        size={20}
+                                    />
+                                    <Text
+                                        font={
+                                            selectedKey === item.key
+                                                ? "b2_16_bold"
+                                                : "b2_16_med"
+                                        }
+                                        color={
+                                            selectedKey === item.key
+                                                ? "primary"
+                                                : "G_400"
+                                        }
+                                    >
+                                        {item.label}
+                                    </Text>
+                                </Flex>
+                            </StyledMenuButton>
+                        </Link>
+                    )
+                )}
+            </Flex>
             {button}
         </LNBWrapper>
     );
@@ -125,43 +139,15 @@ const LNBWrapper = styled.div`
     width: 133px;
 `;
 
-const StyledMenu = styled(Menu)`
-    border-inline-end: none !important;
-    padding: 0;
+const StyledMenuButton = styled.button`
+    ${({ theme }) => theme.mixins.flexBox("column")};
+    width: 149px;
+    height: 48px;
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.G_400};
+    border-radius: 8px;
 
-    .ant-menu-item {
-        ${({ theme }) => theme.mixins.flexBox("row", "start", "center")};
-        gap: 6px;
-        padding: 0;
-        padding-left: 10px;
-        background-color: transparent !important;
-        width: 149px;
-        height: 48px;
-    }
-
-    .ant-menu-title-content {
-        ${({ theme }) => theme.fonts.medium};
-        color: ${({ theme }) => theme.colors.G_400};
-    }
-
-    .ant-menu-item-selected {
-        background-color: transparent !important;
-
-        .ant-menu-title-content {
-            ${({ theme }) => theme.fonts.bold};
-            color: ${({ theme }) => theme.colors.primary};
-        }
-
-        svg {
-            stroke: ${({ theme }) => theme.colors.primary} !important;
-        }
-    }
-
-    .ant-menu-item-active {
-        background-color: ${({ theme }) => theme.colors.primary_10} !important;
-    }
-
-    .ant-menu-item-divider {
-        margin-bottom: 2px;
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.primary_10};
     }
 `;
