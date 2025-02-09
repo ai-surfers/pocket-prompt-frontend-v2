@@ -27,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 url: `${webUrl}/prompt/${promptDetails.id}`,
             },
             twitter: {
+                ...defaultMetadata.twitter,
                 card: "summary_large_image",
                 title: `[프롬프트] ${promptDetails.title}`,
                 description: promptDetails.description,
-                images: [`${webUrl}/img/image.png`],
             },
         };
     } catch (error) {
