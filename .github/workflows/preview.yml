@@ -1,5 +1,3 @@
-# develop -> main으로 PR 남길 때 동작 (AWS amplify가 브랜치별 자동 미리보기 지원하지 않음)
-
 name: Amplify Preview Deployment
 
 on:
@@ -19,16 +17,6 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
-            - name: Trigger Amplify Deployment
-              run: |
-                  aws amplify start-deployment \
-                    --app-id d2ggjieg648h6b \
-                    --branch-name ${{ github.head_ref }} \
-                    --region us-east-2
-              env:
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
             - name: Set Environment Variables
               run: |
                   echo "LATEST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
@@ -36,15 +24,95 @@ jobs:
                   echo "DEPLOY_PREVIEW_URL=https://develop.d2ggjieg648h6b.amplifyapp.com" >> $GITHUB_ENV
                   echo "ENVIRONMENT=preview" >> $GITHUB_ENV
 
-            - name: Comment on PR
+            - name: Comment on PR - Deployment Started
               uses: actions/github-script@v6
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
-                  message: >
-                      ### 🚀 Amplify Preview Success!
-                      | Name                  | Link                                                                 |
-                      |-----------------------|----------------------------------------------------------------------|
-                      | **Latest Commit**     | [${{ env.LATEST_COMMIT }}](https://github.com/${{ github.repository }}/commit/${{ env.LATEST_COMMIT }}) |
-                      | **Latest Deploy Log** | [View Logs](${{ env.DEPLOY_LOG_URL }})                          |
-                      | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
-                      | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
+                  script: |
+                      github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.payload.pull_request.number,
+                        body: `
+                        🚀 **Amplify Deployment Started!**
+                        The deployment process has begun. This may take a few minutes.
+
+                        | Name                  | Link                                                                 |
+                        |-----------------------|----------------------------------------------------------------------|
+                        | **Latest Commit**     | [${{ env.LATEST_COMMIT }}](https://github.com/${{ github.repository }}/commit/${{ env.LATEST_COMMIT }}) |
+                        | **Latest Deploy Log** | [View Logs](${{ env.DEPLOY_LOG_URL }})                          |
+                        | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
+                        | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
+                        `
+                      });
+
+            - name: Wait for Amplify Deployment
+              run: |
+                  echo "Checking Amplify deployment status..."
+                  JOB_ID=$(aws amplify start-deployment --app-id d2ggjieg648h6b --branch-name develop --query "jobId" --output text)
+                  echo "Started Amplify deployment with Job ID: $JOB_ID"
+
+                  while true; do
+                    STATUS=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --query "job.summary.status" --output text)
+                    echo "Current status: $STATUS"
+                    if [[ "$STATUS" == "SUCCEED" ]]; then
+                      echo "Amplify deployment completed successfully!"
+                      break
+                    elif [[ "$STATUS" == "FAILED" ]]; then
+                      echo "Amplify deployment failed!"
+                      ERROR_MESSAGE=$(aws amplify get-job --app-id d2ggjieg648h6b --branch-name develop --job-id $JOB_ID --query "job.summary.statusReason" --output text)
+                      echo "Error: $ERROR_MESSAGE" >> $GITHUB_ENV
+                      exit 1
+                    fi
+                    sleep 30
+                  done
+
+            - name: Comment on PR - Deployment Completed
+              if: success()
+              uses: actions/github-script@v6
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.payload.pull_request.number,
+                        body: `
+                        ✅ **Amplify Deployment Completed!**
+                        The deployment has been successfully completed.
+
+                        | Name                  | Link                                                                 |
+                        |-----------------------|----------------------------------------------------------------------|
+                        | **Latest Commit**     | [${{ env.LATEST_COMMIT }}](https://github.com/${{ github.repository }}/commit/${{ env.LATEST_COMMIT }}) |
+                        | **Latest Deploy Log** | [View Logs](${{ env.DEPLOY_LOG_URL }})                          |
+                        | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
+                        | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
+                        `
+                      });
+
+            - name: Comment on PR - Deployment Failed
+              if: failure()
+              uses: actions/github-script@v6
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.payload.pull_request.number,
+                        body: `
+                        ❌ **Amplify Deployment Failed!**
+                        The deployment encountered an error.
+
+                        **Error Message:** \`${{ env.ERROR_MESSAGE }}\`
+
+                        | Name                  | Link                                                                 |
+                        |-----------------------|----------------------------------------------------------------------|
+                        | **Latest Commit**     | [${{ env.LATEST_COMMIT }}](https://github.com/${{ github.repository }}/commit/${{ env.LATEST_COMMIT }}) |
+                        | **Latest Deploy Log** | [View Logs](${{ env.DEPLOY_LOG_URL }})                          |
+                        | **Deploy Preview URL**| [Preview Environment](${{ env.DEPLOY_PREVIEW_URL }})            |
+                        | **Environment**       | ${{ env.ENVIRONMENT }}                                          |
+
+                        ⚠️ Please check the **Amplify console logs** for more details.
+                        `
+                      });
